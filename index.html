@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Все цвета Яндекса на одной странице</title>
+	<style>
+		body {
+			text-align: center;
+		}
+
+		.colour {
+			text-align: center;
+			display: inline-block;
+			padding: 15px 30px;
+			width: 300px;
+		}
+
+		.label {
+			background-color: white;
+			background-color: rgba(255, 255, 255, 0.25);
+			padding: 2px 4px;
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+
+<div id="colours"></div>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+	var divColours = $('#colours');
+	$.getJSON('colours.json', function (data) {
+		for (var i in data) {
+			if (!data.hasOwnProperty(i)) {
+				continue;
+			}
+
+			var colour = data[i];
+			//console.log(colour);
+			var article = $('<article/>');
+			article.attr({
+				id: 'hex-' + colour.value,
+				title: colour.name,
+				style: 'background-color: #' + colour.value,
+				class: 'colour'
+			});
+			var label = $('<span class="label"/>');
+			label.text(colour.name);
+			article.append(label);
+			
+			divColours.append(article);
+			//divColours.append(' ');
+		}
+		
+		$('body').css('background-color', '#' + data[getRandomInt(0, data.length - 1)].value);
+	});
+
+
+	function getRandomInt(min, max)
+	{
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+});
+</script>
+
+
+</body>
+</html>
